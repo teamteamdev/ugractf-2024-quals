@@ -1,0 +1,20 @@
+category: ppc
+title:
+  ru: На старой железяке…
+  en: Atop this piece of...
+points:   150
+author:   ksixty
+description:
+  ru: >
+    <p>…далеко не улетишь.
+  en: >
+    <p>…junk you won’t get very far.
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: kyzylborda-docker-compose-daemon
+  cwd: app
+  socket: ./app.sock
+  socket_type: http
+secrets:
+  seed: OTc2NTI2M2MtYTYzOS00YTkyLTlmMDgt
+  flag: ugra_your_life_will_change_as_you_figure_out_that_[a-z0-9]{12}

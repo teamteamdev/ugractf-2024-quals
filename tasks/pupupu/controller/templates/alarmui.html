@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>smartAlarm</title>
+		<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+		<style type="text/css">
+			html {
+				background-color: #1f2830;
+				height: 100%;
+				overflow: hidden;
+				overscroll-behavior: none;
+			}
+			body {
+				margin: 0;
+			}
+			header {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding: 0 48px;
+				background-color: #0008;
+			}
+			h1 {
+				font-family: monospace;
+				font-size: 32px;
+				color: #fffd;
+				border-bottom: 4px dotted #fff8;
+			}
+			h2 {
+				font-family: sans-serif;
+				font-size: 18px;
+				color: #fff;
+			}
+			p {
+				font-family: sans-serif;
+				color: #fff;
+				text-align: center;
+			}
+			#time_selector {
+				position: fixed;
+				left: -400px;
+			}
+			#add {
+				position: fixed;
+				bottom: 32px;
+				left: 50%;
+				transform: translateX(-50%);
+				background-color: #007aff;
+				width: 64px;
+				height: 64px;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: #fff;
+				font-size: 64px;
+			}
+			.clocks {
+				margin-top: 16px;
+			}
+			.clock {
+				width: min-content;
+				padding-bottom: 16px;
+				border-bottom: 1px solid #fff1;
+				margin: 0 auto 16px;
+				position: relative;
+			}
+			.time {
+				font-family: sans-serif;
+				font-size: 36px;
+				color: #459eff;
+				margin-bottom: 8px;
+			}
+			.delete {
+				position: absolute;
+				top: 8px;
+				right: 0;
+				background-color: #eb402d;
+				color: #fff;
+				width: 32px;
+				height: 32px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+				cursor: pointer;
+			}
+			.weekdays {
+				display: flex;
+				margin-left: -12px;
+			}
+			.weekday {
+				background-color: #fff1;
+				color: #fffa;
+				width: 32px;
+				height: 32px;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-left: 12px;
+				font-family: sans-serif;
+				font-weight: bold;
+				font-size: 18px;
+				cursor: pointer;
+			}
+			.weekday.enabled {
+				background-color: #fffd;
+				color: #000;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>smartAlarm</h1>
+		</header>
+
+		<div class="clocks" id="clocks"></div>
+
+		<div id="add">+</div>
+		<input type="time" id="time_selector">
+
+		<script type="text/javascript" src="https://zbic.in/konami-code-js/konami-code.js"></script>
+
+		<script type="text/javascript">
+			async function api(action, query) {
+				const req = await fetch(`api/${action}`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						uid: parseInt(localStorage.uid),
+						...query
+					})
+				});
+				const res = await req.json();
+				if (res.error) {
+					alert(res.error);
+				}
+				return res;
+			}
+
+			const timeSelector = document.querySelector("#time_selector");
+			document.querySelector("#add").addEventListener("click", () => {
+				timeSelector.click();
+			});
+			timeSelector.addEventListener("change", async () => {
+				if (timeSelector.value === "") {
+					return;
+				}
+				const [hh, mm] = timeSelector.value.split(":");
+				const hours = parseInt(hh);
+				const minutes = parseInt(mm);
+				const pattern = `${minutes} ${hours} * * 0,1,2,3,4,5,6`;
+				const {clockId} = await api("add-clock", {pattern});
+				addClock(clockId, pattern);
+			});
+
+			const clocks = document.querySelector("#clocks");
+			function addClock(clockId, pattern) {
+				const match = pattern.match(/^(\d+) (\d+) \* \* ([0-9,]+)$/);
+				if (!match) {
+					return;
+				}
+				const minutes = match[1];
+				const hours = match[2];
+				const weekdays = match[3].split(",").map(item => parseInt(item));
+				const div = document.createElement("div");
+				div.className = "clock";
+				div.innerHTML = `
+					<div class="time">${hours}:${("00" + minutes).slice(-2)}</div>
+					<div class="delete">&times;</div>
+					<div class="weekdays">
+						<div data-weekday="1" class="weekday ${weekdays.indexOf(1) === -1 ? "" : "enabled"}">M</div>
+						<div data-weekday="2" class="weekday ${weekdays.indexOf(2) === -1 ? "" : "enabled"}">T</div>
+						<div data-weekday="3" class="weekday ${weekdays.indexOf(3) === -1 ? "" : "enabled"}">W</div>
+						<div data-weekday="4" class="weekday ${weekdays.indexOf(4) === -1 ? "" : "enabled"}">T</div>
+						<div data-weekday="5" class="weekday ${weekdays.indexOf(5) === -1 ? "" : "enabled"}">F</div>
+						<div data-weekday="6" class="weekday ${weekdays.indexOf(6) === -1 ? "" : "enabled"}">S</div>
+						<div data-weekday="0" class="weekday ${weekdays.indexOf(0) === -1 ? "" : "enabled"}">S</div>
+					</div>
+				`;
+				div.querySelector(".delete").addEventListener("click", async e => {
+					e.preventDefault();
+					await api("delete-clock", {clockId});
+					clocks.innerHTML = "";
+					reload();
+				});
+				for (const weekdayNode of div.querySelectorAll(".weekday")) {
+					const id = parseInt(weekdayNode.getAttribute("data-weekday"));
+					weekdayNode.addEventListener("click", async e => {
+						e.preventDefault();
+						const idx = weekdays.indexOf(id);
+						if (idx === -1) {
+							weekdays.push(id);
+							weekdays.sort();
+						} else {
+							weekdays.splice(idx, 1);
+						}
+						weekdayNode.classList.toggle("enabled");
+						const newPattern = `${minutes} ${hours} * * ${weekdays.join(",")}`;
+						await api("modify-clock", {clockId, newPattern});
+					});
+				}
+				clocks.append(div);
+			}
+
+			async function reload() {
+				const clocks = await api("get-clocks");
+				for (let i = 0; i < clocks.length; i++) {
+					addClock(i, clocks[i]);
+				}
+			}
+
+			reload();
+
+			document.addEventListener("konamiCode", async () => {
+				alert((await api("get-diagnostics")).logs);
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Rust Playground</title>
+    <style type="text/css">
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        background-color: #e1e1db;
+        font-family: Verdana, Arial, sans-serif;
+      }
+
+      header {
+        padding: 12px 16px;
+        padding-bottom: 0;
+      }
+
+      .button {
+        font-weight: bold;
+        background-color: #aa4422;
+        color: #ffffff;
+        padding: 6px 12px;
+        border-radius: 4px;
+        border: 2px solid #80331a;
+        cursor: pointer;
+      }
+      .button:hover, .button:active {
+        background-color: #80331a;
+      }
+
+      main {
+        padding: 12px 16px;
+        padding-top: 0;
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+      }
+
+      .code, .output {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+      }
+      textarea {
+        flex: 1 1 0;
+        resize: none;
+      }
+
+      .title {
+        margin-top: 16px;
+        margin-bottom: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <button class="button run">RUN &nbsp; ▶</button>
+    </header>
+
+    <main>
+      <div class="code">
+        <div class="title">CODE</div>
+        <textarea>fn run(flag: &UnsafeCell&lt;String&gt;) {
+    // Try to extract the flag
+    println!("Hello, world!");
+}</textarea>
+      </div>
+      <div class="output">
+        <div class="title">OUTPUT</div>
+        <textarea readonly>warning: unused variable: `flag`
+ --> playground.rs:9:8
+  |
+9 | fn run(flag: &UnsafeCell&lt;String&gt;) {
+  |        ^^^^ help: if this is intentional, prefix it with an underscore: `_flag`
+  |
+  = note: `#[warn(unused_variables)]` on by default
+
+warning: 1 warning emitted
+
+Hello, world!
+Exit code 0
+</textarea>
+      </div>
+    </main>
+
+    <script type="text/javascript">
+      document.querySelector(".run").addEventListener("click", async () => {
+        const code = document.querySelector(".code textarea").value;
+        const output = document.querySelector(".output textarea");
+        output.value = "";
+        output.placeholder = "Running...";
+        const formData = new FormData();
+        formData.append("code", code);
+        const result = await (await fetch("", {
+          method: "POST",
+          body: formData
+        })).text();
+        output.value = result;
+        output.placeholder = "(no output)";
+      });
+    </script>
+  </body>
+</html>

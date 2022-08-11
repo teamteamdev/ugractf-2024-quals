@@ -1,0 +1,28 @@
+category: ppc
+points: 100
+title:
+  ru: Несложная
+  en: Easy
+author: purplesyringa
+description:
+  ru: |
+    <p>All right, let’s do this one last time.</p>
+
+    <p><em>Обновлено 10 февраля в 14:40:</em> Мы обнаружили, что это задание можно решить гораздо более лёгким способом, чем был изначально задуман.
+    Баллы за это задание уменьшены до 100, и теперь на борде доступно новое задание — <a href="/tasks/peterparker2/">Сложная</a> (ppc 150).
+    Если вы решали задание задуманным способом, то ваш эксплойт должен подойти для обеих версий.</p>
+  en: |
+    <p>All right, let’s do this one last time.</p>
+
+    <p><em>Update on February 10, 14:40:</em> We found out that this challenge could be solved much easier than we expected.
+    We've reduced challenge cost to 100 and published a new one — <a href="/tasks/peterparker2/">Uneasy</a> (ppc 150).
+    If you solved this challenge as intended, your exploit should solve both.</p>
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: kyzylborda-docker-compose-daemon
+  cwd: app
+  socket: ./app.sock
+  socket_type: http
+secrets:
+  seed: VY5vve6R6oBSZk8EE1k7v4HKwv/C/ETV
+  flag: ugra_sorry_for_clickbait_[a-z0-9]{12}

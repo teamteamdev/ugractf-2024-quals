@@ -1,0 +1,22 @@
+category: misc
+points: 50
+title:
+  ru: Уж
+  en: Uzh
+author: abbradar
+description:
+  en: >
+    <p>3 Billion Devices Run Java, now you can too!</p>
+
+    <p><strong>Added at 16:00:</strong> If your code starts with 0, the challenge was unsolvable. This is fixed, please try again.</p>
+  ru: >
+    <p>3 миллиарда устройств используют Java, теперь можете и вы!</p>
+
+    <p><strong>Добавлено в 16:00:</strong> Если ваш код начинался с нуля, то задание было нерешаемым. Ошибка исправлена, попробуйте заново.</p>
+attachments_path: attachments
+generator:
+  exec: kyzylborda-docker-generator Dockerfile.generator ./generate.py
+  multi_generator_key: uzh
+daemon:
+  exec: kyzylborda-docker-compose-daemon
+  cwd: ./server

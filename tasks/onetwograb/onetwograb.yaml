@@ -1,0 +1,15 @@
+category: misc
+points: 100
+title:
+  ru: Раз, два, взяли
+  en: One, two, grab
+author: enhydra
+description:
+  ru: |-
+    <p>Хватай флаг! Вот он, готовый, просто вызови функцию, которая его вернёт.
+  en: |-
+    <p>Grab the flag! Here it is, ready, just call the function that returns it.
+generator: ../_scripts/kyzylborda-lib-generator
+secrets:
+  seed: YWQgYzYgNjUgMWUgODYgMzYgIHwuLi4u
+  flag: ugra_those_are_basically_all_the_possibilities_of_wasm_[a-z0-9]{9}

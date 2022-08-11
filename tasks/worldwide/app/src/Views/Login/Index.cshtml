@@ -1,0 +1,42 @@
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Войти";
+}
+
+<div id="login-page" class="text-center">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Войти в личный кабинет</div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("Auth", "Login", FormMethod.Post, new { @class = "form" }))
+                        {
+
+                            <div class="form-group">
+                                <label for="Username" class="control-label">Имя пользователя</label>
+                                @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Password" class="control-label">Пароль</label>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Войти</button>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @ViewBag.ErrorMessage
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+FROM imachug/kyzylborda_lib
+WORKDIR /task/controller
+COPY controller/requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+CMD ["kyzylborda-quarantine", "--", "uvicorn", "--uds", "/tmp/app.sock", "server:app"]

@@ -1,0 +1,7 @@
+FROM imachug/kyzylborda_lib
+RUN apk add git && \
+	git clone https://github.com/DonoA/PyAnvilEditor /tmp/PyAnvilEditor && \
+	cp -r /tmp/PyAnvilEditor/pyanvil /usr/local/lib/python3*/site-packages/ && \
+	rm -r /tmp/PyAnvilEditor
+WORKDIR /task
+ENTRYPOINT ["kyzylborda-generate", "generator"]

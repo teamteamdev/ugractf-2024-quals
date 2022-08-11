@@ -1,0 +1,91 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Выписка книги{% endblock %}
+
+{% block content %}
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+          <div class="dropdown">
+            <img src="{{ url_for('static', filename='logotip new.png') }}" style="height: 90px; float: left">
+            <div>
+                <h3 style="color: #720"><b>ФГАГАУ "БИБЛИОТЕКА ИМ. СЕВАСТЬЯНА ЖУКОВА-МАРИНИНА"</b></h3>
+                <h4>Интернет-портал «Забор-приём"</h4>
+            </div>
+      </div>
+    </div><!--/.container-fluid -->
+  </nav>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="alert alert-danger">
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+  <div class="container mt-5">
+
+    <h1>Выписка книги</h1>
+    <h2>{{book.author}}. {{book.title}}</h1>
+    <h4>{{book.description}}</h2>
+    {% if out_of_stock %}
+        <p class="alert alert-danger">К сожалению, эта книга закончилась. Ожидаемая дата поступления 31.04.2024</p>
+    {% endif %}
+    {% if form_trigger %}
+        <p>ВНИМАНИЕ! Эта книга выписывается только читателям, удовлетворяющим следующим условиям:</p>
+        <ul>
+            <li>учёная степень кандитата наук или выше;</li>
+            <li>водительское удостоверение категорий "Tm" и/или "D".</li>
+        </ul>
+        <p>Для удостоверения личности читателя просим внести соответствующие данные:</p>
+        <form id="orderForm" method="post">
+            <div class="mb-3">
+                <label for="vuz_id" class="form-label" >Идентификатор учебного заведения, в котором получена учёная степень (ОГРН)</label>
+                <input type="text" class="form-control" id="vuz_id" name="vuz_id" required>
+            </div>
+            <div class="mb-3">
+                <label for="driver_id" class="form-label">Номер водительского удостоверения</label>
+                <input type="text" class="form-control" id="driver_id" name="driver_id" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Выписать книгу</button>
+        </form>
+
+        <script>
+            document.getElementById("orderForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+                if (ReaderCheck()){
+                      this.submit();
+                }
+                else{
+                  alert("Не подтверждена личность читателя!");
+                }
+            });                     
+    
+            function ReaderCheck() {
+                var vuz_id = document.getElementById('vuz_id').value;
+                if (!vuz_id.match(/^[0-9]{13}$/)){
+                    return false;
+                }   
+                var driver_id = document.getElementById('driver_id').value;
+                if (!driver_id.match(/^[0-9]{2}\s[0-9]{2}\s[0-9]{6}$/)){
+                    return false;
+                }
+            }
+        </script>
+    {% endif %}
+  </div>
+
+    <br><br>
+    <div class="alert alert-warning">
+        <h5><b>АФИША культурных мероприятий</b></h5>
+        <br>
+        <img src="{{ url_for('static', filename='region.jpg') }}" height=200 width=400>
+        <p>Вас приглашают на экспозицию под открытым небом. Все подробоности по информации на плакате.</p>
+        <br>
+    </div>
+    <br>
+
+    
+  {% endblock %}

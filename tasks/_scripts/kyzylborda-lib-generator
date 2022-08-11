@@ -1,0 +1,101 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p coreutils -p docker-compose -p bubblewrap -p pkgs.docker
+set -eET -o pipefail
+shopt -s inherit_errexit
+
+
+#
+# Parse arguments
+#
+args=()
+while [ $# -gt 3 ]; do
+  args+=("$1")
+  shift
+done
+
+user_id="$1"
+if [ -z "$user_id" ]; then
+  echo "Usage: $0 args... user_id workdir tasks" >&2
+  exit 1
+fi
+shift
+
+workdir="$1"
+if [ -z "$workdir" ]; then
+  echo "Usage: $0 args... user_id workdir tasks" >&2
+  exit 1
+fi
+shift
+
+raw_tasks="$1"
+tasks=(${raw_tasks//,/ })
+if [ ${#tasks[@]} -eq 0 ]; then
+  echo "Usage: $0 args... user_id workdir tasks" >&2
+  exit 1
+fi
+shift
+
+
+#
+# Build generator image
+#
+container_name="${KYZYLBORDA_DOCKER_PREFIX:-}generator_${tasks[0]}"
+
+if [ -f Dockerfile.generator ]; then
+  docker build -t "$container_name" -f Dockerfile.generator . >&2
+elif [ -f generator.py ]; then
+  if [ -f requirements.txt ]; then
+    docker build -t "$container_name" -f - . >&2 <<EOF
+FROM imachug/kyzylborda_lib
+WORKDIR /task
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+ENTRYPOINT ["kyzylborda-generate", "generator"]
+EOF
+  else
+    docker build -t "$container_name" -f - . >&2 <<EOF
+FROM imachug/kyzylborda_lib
+WORKDIR /task
+ENTRYPOINT ["kyzylborda-generate", "generator"]
+EOF
+  fi
+else
+  docker build -t "$container_name" -f - . >&2 <<EOF
+FROM imachug/kyzylborda_lib
+WORKDIR /task
+ENTRYPOINT ["kyzylborda-generate", ""]
+EOF
+fi
+
+
+#
+# Run generator image
+#
+if [ -z ${DOCKER_ROOTLESS+x} ] && ! [ -z ${DOCKER_HOST+x} ]; then
+  # Check if socket is owned by current user; assume rootless Docker if yes.
+  if [[ "$DOCKER_HOST" =~ ^unix://(.*)$ ]]; then
+    docker_sock="${BASH_REMATCH[1]}"
+    if [ "$(stat -c '%u' "$docker_sock" 2>/dev/null || true)" = "$(id -u)" ]; then
+      DOCKER_ROOTLESS=1
+     fi
+  fi
+fi
+
+if [ "${DOCKER_ROOTLESS:-}" = "1" ]; then
+  user="0:0"
+else
+  user="$(id -u):$(id -g)"
+fi
+
+if [ "${args[0]}" == "-u" ]; then
+  user="${args[1]}"
+  args=("${args[@]:2}")
+fi
+
+exec docker run \
+  --rm \
+  --volume "$workdir/:$workdir/" \
+  --volume "$(pwd):/task:ro" \
+  -e "TASK_NAME=$raw_tasks" \
+  -u "$user" \
+  -- "$container_name" "${args[@]}" "$user_id" "$workdir" "$raw_tasks"

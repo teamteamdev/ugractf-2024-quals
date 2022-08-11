@@ -1,0 +1,5 @@
+volumes:
+  - user_data:/data
+socket: 127.0.0.1:8000
+healthcheck:
+  connect: 127.0.0.1:8000

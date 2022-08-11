@@ -1,0 +1,18 @@
+category: crypto
+points: 300
+title: Pedersen
+author: deffrian
+description:
+  ru: <p>Теперь флаг можно легко купить в магазине — всего 1 337 ₽ на киберкошельке и он ваш.
+  en: <p>Now you can just buy flag in a shop — put 1 337 ₽ to your cyberwallet and flag is yours.
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: ../_scripts/kyzylborda-lib-quarantine-daemon Dockerfile.controller app
+  cwd: .
+  socket: ./app.sock
+  socket_type: http
+attachments_path: public
+secrets:
+  seed: EcWSvzMpHTqHnGKDbNza6uXpYALeLnd1
+  flag: ugra_math_is_always_an_evil_creature_[a-z0-9]{12}
+# пупупуsdfjkhl.,..gfdjhjkl

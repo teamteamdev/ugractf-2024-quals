@@ -1,0 +1,3 @@
+FROM imachug/kyzylborda_lib
+WORKDIR /task/controller
+CMD ["kyzylborda-quarantine", "unix:/tmp/app.sock", "server"]

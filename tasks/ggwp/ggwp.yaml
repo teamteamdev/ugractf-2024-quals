@@ -1,0 +1,11 @@
+category: stegano
+points: 100
+title: GGWP
+author: purplesyringa
+description:
+  ru: <p>Мы тут мир нагенерировали.
+  en: <p>We’ve generated a world.
+generator: ../_scripts/kyzylborda-lib-generator
+secrets:
+  seed: HADedqrys6r1qBzBwr+RoS7WR3LlsyXz
+  flag: ugra_i_hope_you_didnt_do_this_by_hand_[a-z0-9]{12}

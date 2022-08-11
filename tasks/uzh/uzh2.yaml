@@ -1,0 +1,20 @@
+category: reverse
+points: 200
+title:
+  ru: Уж 2
+  en: Uzh 2
+author: abbradar
+description:
+  en: >
+    <p>Now try to win the game for real!</p>
+    
+    <p><strong>Added at 16:00:</strong> If your code starts with 0, the challenge was unsolvable. This is fixed, please try again.</p>
+  ru: >
+    <p>Теперь попробуйте победить в игре по-настоящему!</p>
+    
+    <p><strong>Добавлено в 16:00:</strong> Если ваш код начинался с нуля, то задание было нерешаемым. Ошибка исправлена, попробуйте заново.</p>
+# depends_on: uzh
+attachments_path: attachments
+generator:
+  exec: kyzylborda-docker-generator Dockerfile.generator ./generate.py
+  multi_generator_key: uzh

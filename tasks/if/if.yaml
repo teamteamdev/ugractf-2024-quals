@@ -1,0 +1,20 @@
+category: recon
+points: 200
+title: IF
+author: enhydra
+description:
+  ru: |-
+    <p>Расшифруйте сокращение.
+    <p>Количество попыток ограничено. Будьте аккуратны, иначе можно совсем лишить себя возможности решить задание — запросы на предоставление дополнительных попыток удовлетворяться не будут. Уязвимостей в проверяющей системе не предусмотрено, не пытайтесь их искать.
+  en: |-
+    <p>Deabbreviate that.
+    <p>You have limited number of attempts. Be careful or you may make the challenge unsolvable — requests for additional attempts will be denied. There are no intended vulnerabilities in the scanning system, don’t try searching for them.
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: kyzylborda-docker-compose-daemon
+  cwd: app
+  socket: ./app.sock
+  socket_type: http
+secrets:
+  seed: Lj0nZi4uLnwKMDAwMDAwMzAgIDEzIDQzI
+  flag: ugra_keep_your_schluesselbund_from_falling_into_the_aufzugskabinenetagebodenspalt_[a-z0-9]{12}

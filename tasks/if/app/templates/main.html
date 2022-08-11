@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        html {
+            position: relative;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 22px;
+            background: #FFF8EE;
+            margin: 0;
+        }
+        body > p, body > footer, body > form {
+            width: 100%;
+            max-width: 40em;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 2em;
+        }
+        p.i {
+            width: auto;
+            max-width: initial;
+            margin-left: 0;
+            margin-right: 0;
+            padding: 0;
+        }
+        p.i img {
+            width: 100vw;
+            max-width: 100%;
+        }
+        form { 
+            white-space: nowrap;
+        }
+        input, select {
+            font: inherit;
+            font-size: 80%;
+        }
+        footer {
+            color: #999;
+            font-size: 80%;
+            margin-top: 2em;
+            margin-bottom: 2em;
+            text-align: center;
+        }
+    </style>
+    <title>Das Nichtabkürzungsüberprüfungssystem</title>
+<body>
+    {% if attempts is defined %}
+        {% if flag_img %}
+            <p>Nun, da die Deabkürzung abgeschlossen ist, ist es gemäß dem Bundesgesetz erforderlich, dass Sie den Captcha-Test bestehen. Es ist tatsächlich eine Eigenart des Gesetzes, dass der Test nach erfolgreicher Deabkürzung durchgeführt wird, aber so ist es nun mal.
+            <p class="i"><img src="data:image/jpeg;base64,{{ flag_img }}"></p>
+            <p>Die Wörter auf dem Bild nicht lesen können? <a href="verify_result">Aktualisieren Sie die Seite</a>, um es erneut zu generieren.</p>
+        {% else %}
+            <p>Keine Ihrer Vermutungen waren bisher richtig.
+            <p><strong>Verbleibende Versuche: {{ attempts }}</strong>
+            {% if attempts > 0 %}
+            <p><a href=".">Versuchen Sie es erneut</a>, aber seien Sie vorsichtig und klug!
+            {% else %}
+            <p><strong>Alle weiteren Versuche werden verworfen, selbst wenn sie korrekt sind. Diese Seite wird angezeigt.</strong>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <p>Bitte studieren Sie das folgende Bild:</p>
+        <p class="i"><img src="/static/if.jpg">
+        <p>Es handelt sich offensichtlich um eine Abkürzung. Was bedeutet das?
+        <p>Wenn Sie ein einziges Zusammensetzungswort finden, wählen Sie bitte die beiden getrennten Wörter aus. Wir machen das in der deutschen Sprache, wissen Sie.
+        <p><form method="post" action="verify">
+            {% for c in ["i", "f"] %}
+                <select name="{{ c }}" id="select-{{ c }}">
+                    <option value="">{{ c.upper() }}…</option>
+                    {% for word in dicts[c] -%}
+                        <option value="{{ word.lower() }}">{{ word }}</option>
+                    {%- endfor %}
+                </select>
+            {% endfor %}
+            <input type="submit" value="Bewerten" />
+        </form>
+    {% endif %}
+
+    <footer>
+        Entwickelt vom Technologieforschungsinstitut im Jahr 2024. <s>So geht es.</s>
+    </footer>
+</body>

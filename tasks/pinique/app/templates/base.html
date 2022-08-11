@@ -1,0 +1,18 @@
+{% extends "bootstrap/base.html" %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+
+{% block navbar %}
+<div class="navbar">
+    <div class="logotip">
+        <a href="/{{token}}/">
+            <img src="{{ url_for('static', filename='csdo_ot_vinta.png') }}" class="main-logo">
+            <img src="{{ url_for('static', filename='pin.png') }}" class="pin">
+            <img src="{{ url_for('static', filename='uutnoe_nebo.png') }}" class="side-logo">
+        </a>
+    </div>
+</div>
+{% endblock %}

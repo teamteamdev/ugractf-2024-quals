@@ -1,0 +1,77 @@
+category: crypto
+points: 350
+title:
+  ru: Ешь богатых!
+  en: Eat the rich!
+author: purplesyringa
+description:
+  ru: >
+    <p>Тайное мировое правительство, не справившись вытащить информацию из организаторов восстания против
+    всего самого плохого <a href="https://xkcd.com/538/">своим дефолтным методом</a>, решило
+    обратиться за помощью к вам, чтобы вы решили задачу дискретного логарифмирования. Вы втайне
+    поддерживаете повстанцев, поэтому за два дня вы составили такой план:
+
+    <ol>
+      <li>
+        Просим денежное вознаграждение от тайного мирового правительства
+      </li>
+      <li>
+        Ссылаясь на паранойю, убеждаем тайное мировое правительство сначала провести доказательство с
+        нулевым разглашением
+      </li>
+      <li>
+        Доказываем знание ключа
+      </li>
+      <li>
+        Просим вознаграждение сразу после подтверждения корректности ключа
+      </li>
+      <li>
+        <s>Отдаем ключ</s> Закупаемся попкорном и ракетным топливом и улетаем куда-нибудь подальше,
+        пока нас не поймали
+      </li>
+    </ol>
+
+    <p>Все пункты, кроме третьего, вы уже проработали, но вот вместо того, чтобы решить задачу, вы
+    доказали, что ее решить невозможно. Но не повод же это отказываться от плана! Наверное, есть
+    другое решение…
+  en: >
+    <p>The shadow government has been unable to extract valuable information from the rebels against the
+    Big Bad <a href="https://xkcd.com/538/">with a wrench</a>, and now they're asking you for help.
+    They want you to solve the discrete logarithm problem. Unfortunately for them, you actually
+    support the rebels in secret, so you came up with a plan:
+
+    <ol>
+      <li>
+        You ask the shadow government for a monetary reward
+      </li>
+      <li>
+        You persuade the shadow government to perform a zero-knowledge proof at first, alluding to
+        your paranoid tendencies
+      </li>
+      <li>
+        You prove that you know the key
+      </li>
+      <li>
+        You ask for a monetary reward immediately afterwards
+      </li>
+      <li>
+        <s>You submit the key</s> You procure lots of popcorn and rocket propellant and get away
+        before anyone catches on to what you're doing
+      </li>
+    </ol>
+
+    <p>You've sort of worked out all the bullets, save for the third one. The third one turned to be
+    problematic, though&mdash;instead of finding the key, you've managed to prove that is impossible.
+    But does that imply you have to abolish the plan?..
+bullets:
+  - "Token: <code>{{token}}</code>"
+attachments_path: app/server/attachments
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: kyzylborda-docker-compose-daemon
+  cwd: app
+  socket: ./app.sock
+  socket_type: http
+secrets:
+  seed: +U6m2AnNjQh2Hi98uiA+llyGnHjOwW1l
+  flag: ugra_g00d_1uck_w1th_y0ur_run4w4y_n0w_[a-z0-9]{12}

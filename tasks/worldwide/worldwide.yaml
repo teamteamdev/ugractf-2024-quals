@@ -1,0 +1,17 @@
+category: web
+title:
+  ru: Языковой барьер
+  en: Language barrier
+points:   150
+author:   baksist
+description:
+  ru: >
+    <p>Поручили младшему специалисту сделать локализацию сайта, а тестировать было некому и некогда. Посмотрите?
+  en: >
+    <p>We’ve asked our junior dev to implement localization of a website, but there was no time or people to test it. Can you take a look?
+generator: kyzylborda-docker-generator Dockerfile.generator ./generate.py
+daemon:
+  exec: kyzylborda-docker-compose-daemon
+  cwd: app
+  socket: ./app.sock
+  socket_type: http

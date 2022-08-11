@@ -1,0 +1,5 @@
+attachments/board.png filter=lfs diff=lfs merge=lfs -text
+writeup/add.jpg filter=lfs diff=lfs merge=lfs -text
+writeup/alarmui.jpg filter=lfs diff=lfs merge=lfs -text
+writeup/index.jpg filter=lfs diff=lfs merge=lfs -text
+writeup/withtimer.jpg filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,3 @@
+aiohttp
+aiohttp_jinja2
+PyJWT

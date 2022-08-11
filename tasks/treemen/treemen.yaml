@@ -1,0 +1,11 @@
+category: forensics
+points: 200
+title:
+  ru: Прямо с веточки
+  en: Right off the vine
+author: udn_t
+description:
+  ru: <p>Каждый мужчина обязан посадить дерево, каждый ребенок обязан собрать его плоды.
+  en: <p>Every man ought to plant a tree, every child ought to gather its fruits.
+generator: [../_scripts/kyzylborda-lib-generator, -u, root:root]
+attachments_path: attachments

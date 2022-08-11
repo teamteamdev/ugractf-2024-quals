@@ -1,0 +1,83 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+          <div class="dropdown">
+            <img src="{{ url_for('static', filename='logotip new.png') }}" style="height: 90px; float: left">
+            <div>
+                <h3 style="color: #720"><b>ФГАГАУ "БИБЛИОТЕКА ИМ. СЕВАСТЬЯНА ЖУКОВА-МАРИНИНА"</b></h3>
+                <h4>Интернет-портал «Забор-приём"</h4>
+            </div>
+      </div>
+    </div><!--/.container-fluid -->
+  </nav>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="alert alert-danger">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <div class="container mt-5 alert alert-info">
+        <img src="{{ url_for('static', filename='1.jpg') }}" style="height: 300px; float: right; border: 1px solid #000">
+        <h2 class="mb-4">Войдите в систему</h2>
+        <p>При регистрации и подписании Согласия на обработку персональных данных вам доступен доступ к данному ресурсу по выданному паролю и номеру вашего читательского билета.</p>
+        <form id="loginForm" style="clear: both" method="post">
+            <div class="mb-3">
+                <label for="bilet" class="form-label">Номер читательского билета</label>
+                <input type="text" class="form-control" name="bilet" id="bilet" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Пароль для доступа</label>
+                <input type="password" class="form-control" name="password" id="password" required>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Войти в систему">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            if (await validateCredentials()){
+                  this.submit();
+            }
+            else{
+              alert("Недействительный номер читательского билета (возможно, вы не подписали Согласие на обработку персональных данных, обратитесь в библиотеку по адресу, указанному на Главной странице");
+            }
+        });
+
+        async function validateCredentials() {
+            var chitateli = await fetch('/{{token}}/list_users').then(response => {
+                return response.json();
+              }).catch(err => {
+                console.log(err);
+              })
+            var bilet = document.getElementById('bilet').value;
+            var reader_password = document.getElementById('password').value;
+            if (bilet in chitateli){
+              if (chitateli[bilet].isValid == true && chitateli[bilet].signedOnlineConsent == true){
+                let password = "";
+                password += bilet[5] + bilet[4] + bilet[6];
+                password += String.fromCharCode(1040+parseInt(bilet[3]));
+                password += String.fromCharCode(1040+parseInt(bilet[7]));
+                password += String.fromCharCode(1040+parseInt(bilet[8]));
+                password += String(10 - parseInt(bilet[0]));
+                password += '7'
+                if (password.match(/[0-9]{3}[А-Я]{3}[0-9]{2}/) && password == reader_password){
+                  return true;
+                }
+              }
+            }
+            return false;
+        }
+    </script>
+{% endblock %}

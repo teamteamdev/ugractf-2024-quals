@@ -1,0 +1,22 @@
+category: ctb
+points: 300
+title: 🚀 Blazingly fast 🚀
+author: purplesyringa
+description:
+  ru: >
+    <p>Как известно, Rust &mdash; безопасный язык в том смысле, что без использования <code>unsafe</code>
+    в нем невозможно сделать действие, нарушающее безопасность памяти. Получается, одним запретом
+    <code>unsafe</code> Rust превращается в безопасную песочницу. Ведь да?
+  en: >
+    <p>They say Rust is a memory-safe language, which means that code that avoids <code>unsafe</code>
+    can’t perform an insecure operation. This seems to indicate forbidding <code>unsafe</code> turns
+    Rust into a safe sandbox, doesn’t it?
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: ../_scripts/kyzylborda-lib-quarantine-daemon Dockerfile.controller build
+  cwd: .
+  socket: ./app.sock
+  socket_type: http
+secrets:
+  seed: KpcpJcCyRQJrK7+nuVLgWejqZ8DeNc33
+  flag: ugra_I_unsound_is_nauseating_[a-z0-9]{12}

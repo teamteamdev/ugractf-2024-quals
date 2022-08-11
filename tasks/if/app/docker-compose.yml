@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    user: "${DOCKER_USER}"
+    environment:
+      - TASK_NAME
+    volumes:
+      - ".:/app:ro"
+      - "../:/task:ro"
+      - "${TMPDIR}:/tmp"
+      - "${STATEDIR}:/state"
+networks:
+  default:
+    internal: true

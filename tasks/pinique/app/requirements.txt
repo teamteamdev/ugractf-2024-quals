@@ -1,0 +1,5 @@
+gunicorn
+flask
+Flask-Bootstrap
+Flask-Limiter
+pymemcache

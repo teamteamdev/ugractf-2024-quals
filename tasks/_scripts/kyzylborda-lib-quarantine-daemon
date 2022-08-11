@@ -1,0 +1,172 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p coreutils -p docker-compose -p bubblewrap -p pkgs.docker -p jq
+set -eET
+shopt -s inherit_errexit
+
+
+#
+# Parse arguments
+#
+args=()
+docker_run_args=()
+
+
+for arg in "$@"; do
+  if [[ "$arg" =~ ^-.+$ ]]; then
+    docker_run_args+=("$arg")
+  else
+    args+=("$arg")
+  fi
+done
+
+if [ "${#args[@]}" -lt 3 ]; then
+  echo "Usage: $0 controller_dockerfile images... statedir task_name [--<docker args>]*" >&2
+  exit 1
+fi
+
+controller_dockerfile="${args[0]}"
+box_image_dirs=(${args[@]:1:${#args[@]}-3})
+statedir="${args[-2]}"
+task_name="${args[-1]}"
+
+
+#
+# Build controller image
+#
+controller_image_name="${KYZYLBORDA_DOCKER_PREFIX:-}controller_task_$task_name"
+DOCKER_BUILDKIT=1 docker build -t "$controller_image_name" -f "$controller_dockerfile" .
+
+final_image_dockerfile="FROM $controller_image_name"$'\n'
+
+
+#
+# Build box images
+#
+shift_id() {
+  if [ 0 -le "$1" ] && [ "$1" -lt 2000 ]; then
+    echo "$(($1 + 32768))"
+  elif [ 32000 -le "$1" ] && [ "$1" -lt 34000 ]; then
+    echo "$(($1 - 32000 + 2000 + 32768))"
+  elif [ 64000 -le "$1" ] && [ "$1" -lt 66000 ]; then
+    echo "$(($1 - 64000 + 4000 + 32768))"
+  else
+    echo "UID/GID $1 cannot be mapped (file $3 in box $2)" >&2
+    exit 1
+  fi
+}
+
+for box_image_dir in "${box_image_dirs[@]}"; do
+  box_name="$(basename "$box_image_dir")"
+  box_image_name="${KYZYLBORDA_DOCKER_PREFIX:-}box_${box_name}_task_$task_name"
+
+  DOCKER_BUILDKIT=1 docker build -t "$box_image_name" "$box_image_dir"
+
+  if ! box_image_id="$(docker images -q "$box_image_name")"; then
+    exit 1
+  fi
+  if ! box_image_config="$(docker image inspect "$box_image_id")"; then
+    exit 1
+  fi
+
+  docker_run_args+=("-e" "IMAGE_CONFIG_$box_name=$box_image_config" "--volume" "$(realpath "$box_image_dir"):/apps/$box_name:ro")
+
+  final_image_dockerfile="${final_image_dockerfile}COPY --from=$box_image_name --chown=$(shift_id 0):$(shift_id 0) / /images/$box_name"$'\n'
+
+  # Make a list of files not owned by root:root and figure out what to chown them to
+  command="true"
+  while IFS="" read -r line; do
+    read -r uid gid < <(<<<"$line" cut -d" " -f1,2)
+    file_path="$(<<<"$line" cut -d" " -f3-)"
+    mapped_uid="$(shift_id "$uid" "$box_name" "$file_path")"
+    mapped_gid="$(shift_id "$gid" "$box_name" "$file_path")"
+    command="$command && chown -h $mapped_uid:$mapped_gid /images/$box_name$file_path"
+  done < <(docker run --user 0 --entrypoint /bin/sh "$box_image_name" -c 'find / -xdev \( -not -user 0 -or -not -group 0 \) -exec stat -c "%u %g %n" {} +')
+
+  if [ "$command" != "true" ]; then
+    final_image_dockerfile="${final_image_dockerfile}RUN $command"$'\n'
+  fi
+done
+
+
+#
+# Build final image
+#
+final_image_name="${KYZYLBORDA_DOCKER_PREFIX:-}final_task_$task_name"
+
+docker build -t "$final_image_name" -f- . <<<"$final_image_dockerfile"
+if ! final_image_id="$(docker images -q "$final_image_name")"; then
+  exit 1
+fi
+
+
+#
+# Mount a copy of the image
+#
+
+# I am so not proud of this.
+#
+# Docker mounts the image using overlayfs to merge multiple layers. Then sysbox mounts another
+# overlayfs for each container specifically, using a temporary upperdir/workdir and the overlayfs
+# provided by Docker for the lowerdir. All in all, two overlays are mounted on top of one another,
+# which is exactly the limit imposed by the kernel, meaning that our sandbox cannot mount another
+# overlay. Bummer.
+#
+# We can avoid this inefficiency by mounting the overlay for the container manually, decreasing the
+# stacking depth to 1, allowing the sandbox to mount one other overlay, which is enough for our
+# purposes.
+
+final_image_config="$(docker inspect "$final_image_id")"
+driver="$(<<<"$final_image_config" jq -r ".[0].GraphDriver.Name")"
+if [ "$driver" != "overlay2" ]; then
+  # TODO: If the driver is not overlay2, perhaps we can avoid this altogether because there won't be
+  # a problem with stacking overlay on top of a filesystem controlled by another driver?
+  echo "Drivers other than overlay2 are not supported. You are using $driver."
+  exit 1
+fi
+
+lower_dirs=""
+while read -r lower_dir; do
+  internal_path="/docker-images/$(basename "$(dirname "$lower_dir")")"
+  docker_run_args+=("--volume" "$lower_dir:$internal_path:ro")
+  lower_dirs="$lower_dirs:$internal_path"
+done < <(<<<"$final_image_config" jq -r '.[0].GraphDriver.Data.UpperDir, .[0].GraphDriver.Data.LowerDir // empty | split(":")[]')
+lower_dirs="${lower_dirs#:}"
+
+#
+# Start container
+#
+suffix="$(tr -dc a-z0-9 </dev/urandom 2>/dev/null | head -c 16)"
+container_name="${KYZYLBORDA_DOCKER_PREFIX:-}task_${task_name}_${suffix}"
+
+stopped=""
+cleanup() {
+  if [ -z "$stopped" ]; then
+    docker stop -t 3 "$container_name"
+    stopped="1"
+  fi
+}
+trap cleanup INT TERM
+
+mkdir -p "$statedir/real_state"
+
+if ! controller_image_id="$(docker images -q "$controller_image_name")"; then
+  exit 1
+fi
+if ! controller_image_config="$(docker image inspect "$controller_image_id")"; then
+  exit 1
+fi
+
+docker_run_args+=($(<<<"$controller_image_config" jq -r '"-p " + (.[0].Config.ExposedPorts // empty | keys[] | split("/") | (.[0] + ":" + .[0] + "/" + .[1]))'))
+
+docker run \
+  --rm \
+  --name "$container_name" \
+  --runtime sysbox-runc \
+  --volume "$TMPDIR:/tmp" \
+  --volume "$statedir:/state" \
+  --volume "$(pwd):/task:ro" \
+  "${docker_run_args[@]}" \
+  -e "TASK_NAME=$task_name" \
+  -e "LOWER_DIRS=$lower_dirs" \
+  "$final_image_id" &
+wait

@@ -1,0 +1,6 @@
+FROM imachug/kyzylborda_lib
+RUN pip install uvicorn
+WORKDIR /task/controller
+COPY controller/requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+CMD ["kyzylborda-quarantine", "--", "uvicorn", "--uds", "/tmp/app.sock", "--factory", "server:make_app"]

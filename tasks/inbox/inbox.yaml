@@ -1,0 +1,13 @@
+category: misc
+points: 50
+author: nsychev
+title:
+  ru: Входящее письмо
+  en: Incoming letter
+description:
+  ru: <p>Странно, вместа письма какие-то символы. Неужто послание с другой планеты?
+  en: <p>Strange... I found some strange symbols in my inbox. May it be a letter from another planet?
+generator: ../_scripts/kyzylborda-lib-generator
+secrets:
+  seed: 7kUMKk9AdwPlzrhpKedgF1QCzpvULNNP
+  flag: ugra_stop_sending_spam_please_[0-79]{12}

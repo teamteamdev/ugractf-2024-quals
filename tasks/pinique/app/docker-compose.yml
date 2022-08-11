@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    environment:
+      - TASK_NAME
+    user: "${DOCKER_USER}"
+    volumes:
+      - ".:/app:ro"
+      - "${TMPDIR}:/tmp"
+      - "../:/task:ro"
+  memcached:
+    image: memcached:1.6.23-alpine
+    command: memcached -p 11211
+networks:
+  default:
+    internal: true

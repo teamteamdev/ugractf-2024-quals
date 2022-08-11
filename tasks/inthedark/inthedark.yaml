@@ -1,0 +1,23 @@
+category: admin
+points: 200
+title:
+  ru: Во тьме
+  en: In the dark
+author: purplesyringa
+description:
+  ru: <p>Кто-нибудь, выключите темнарик!
+  en: <p>Can anybody turn off the flashdark?!
+bullets:
+  - <code>nc inthedark.{{hostname}} 9275</code>
+  - "Token: <code>{{token}}</code>"
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: ../_scripts/kyzylborda-lib-quarantine-daemon Dockerfile.controller app
+  cwd: .
+  socket: ./app.sock
+  socket_type: tcp
+  tcp_port: 9275
+secrets:
+  seed: ydTGbLNR30PLnm/kHsH1fw7PU39uNHPD
+  flag: ugra_there_is_light_at_the_end_of_the_tunnel_[a-z0-9]{12}
+# meow1.

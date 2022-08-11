@@ -1,0 +1,63 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+          <div class="dropdown">
+            <img src="{{ url_for('static', filename='logotip new.png') }}" style="height: 90px; float: left">
+            <div>
+                <h3 style="color: #720"><b>ФГАГАУ "БИБЛИОТЕКА ИМ. СЕВАСТЬЯНА ЖУКОВА-МАРИНИНА"</b></h3>
+                <h4>Интернет-портал «Забор-приём"</h4>
+            </div>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="/{{token}}">Заглавная страница</a></li>
+          <li><a href="/{{token}}/login">Авторизация</a></li>
+          <li class="active"><a href="#">Каталог литературы для заказа</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+  </nav>
+
+  <header class="py-3 mb-3 border-bottom">
+        <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
+          </div>
+        </div>
+    </header>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="alert alert-danger">
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+    <div class="container mt-5">
+        <h1>Добро пожаловать</h1>
+        <h6>Портал разработан в рамках приоритетной программы "Доступная среда для электронных библиотек" по населению региона Нефтеюганского района (посёлок Хыть-Ях, Хыть-Ягун).</h6>
+        <img src="{{ url_for('static', filename='skewbox.png') }}" height=80 width=150>      
+    
+        <h3>На текущий момент в библиотечной системе зарегистрированы следующие издания:</h3>
+        <ul>
+        {% for i in range(books|length) %}
+            <li><a href="/{{token}}/catalog/{{i}}">{{books[i].author}} - {{books[i].title}}</a></li>
+        {% endfor %}
+        </ul>        
+
+        <br><br>
+        <div class="alert alert-warning">
+            <h5><b>АФИША культурных мероприятий</b></h5>
+            <br>
+            <img src="{{ url_for('static', filename='region.jpg') }}" height=200 width=400>
+            <p>Вас приглашают на экспозицию под открытым небом. Все подробоности по информации на плакате.</p>
+            <br>
+        </div>
+        <br>
+
+{% endblock %}

@@ -1,0 +1,182 @@
+category: ppc
+points: 400
+title: If a tree falls in a forest
+author: purplesyringa
+description:
+  ru: >
+    <p>
+      &mdash; Слышен ли звук падающего дерева в лесу, если рядом никого нет? &mdash; спросил Вована
+      явно подвыпивший сисадмин. Странно, что несмотря на пиво, такие идеи ему вообще могли прийти в
+      голову. Видать, пик Балмера правда существует…
+    </p>
+
+    <p>
+      &mdash; Так слышен или нет? &mdash; не мог угомониться Толик.
+    </p>
+
+    <p>
+      <i>И что только Толик делает на корпоративе? Кто за графаной следит, интёрны, что ли?</i> &mdash;
+      рассудок Вована на секунду прояснился, но алкоголь тут же вернул себе по праву полученный контроль
+      над разумом.
+    </p>
+
+    <p>
+      &mdash; Нет конечно… &mdash; еще раз попытался собраться с мыслями бедный программист.
+    </p>
+
+    <p>
+      &mdash; Мамой клянешься? Уверен?
+    </p>
+
+    <p>
+      <i>Да чем хочешь, отвали уже…</i> &mdash; чуть не выкрикнул Вован. Возненавидел Толика он еще с
+      тех пор, как тот не дал ему поставить на ноутбук Nix. Но это еще простить можно: безопасность, все
+      дела, да и администрировать неудобно… Вот лезть на отдыхе &mdash; это уже чересчур. Но
+      насиженное место все-таки дороже…
+    </p>
+
+    <p>
+      &mdash; Да хоть про *ик* дом… &mdash; пошел ва-банк Вован.
+    </p>
+
+    <p>
+      &mdash; Ты ж никсер, вроде? &mdash; прищурился Толик, &mdash; Сайд-эффекты не любишь, за
+      воспроизводимую сборку ратуешь? Так скажи мне, на что влияет запуск чистой функции?
+    </p>
+
+    <p>
+      <i>Да вроде ни на что…</i> Странный тип этот Толик. Всегда с ним так: вроде пургу мелет, а вроде
+      и слова какие-то умные. Почему он так странно смотрит… А за серваками почему не следит?
+      Надеется, что проблем не будет и его не прижмут? Или не надеется, а уверен? Так джуны там сидят
+      или скрипты?..
+    </p>
+
+    <p>
+      &mdash; Ну тыкал никс, тыкал… Ф-функция? Да ни на что она не влияет…
+    </p>
+
+    <p>
+      &mdash; Ага, то есть, если в API выставить интерпретатор функции без сайд-эффектов и подать ей
+      аргументом ключ от своего аккаунта, ничего страшного не будет?
+    </p>
+
+    <p>
+      Вован отпил еще глоток. <i>Странно, странно. Опасный тип.</i>
+    </p>
+
+    <p>
+      &mdash; Да нормально все будет, чё ты несешь… Тащи ноут сюда, дай закоммичу твою фигню.
+    </p>
+
+    <p>
+      Толик протянул старенький Lenovo. На таком железе далеко не уедешь… Да и голова подбаливает…
+      Но ничего, накалякать интерпретатор Лиспа можно и во сне. Парсер не нужен, тут yaml хватит… JIT
+      не нужен, какая разница, тут и так сойдет…
+    </p>
+
+    <pre><code>
+    [master 186ce41] LISP
+     1 file changed, 186 insertions(+), 3 deletions(-)
+    </code></pre>
+
+    <p>
+      &mdash; Доволен? &mdash; спросил Вован Толика, но того и след простыл.
+    </p>
+
+    <p>
+      Странный, странный тип…
+    </p>
+  en: >
+    <p>
+      “Can you hear the sound of a falling tree in the forest if there’s no one around?” asked Vovan,
+      the visibly tipsy sysadmin. Oddly enough, despite the beer, such ideas could still cross his
+      mind. Looks like the Ballmer peak really exists…
+    </p>
+
+    <p>
+      “So can you hear it or not?” Tolik couldn’t let it go.
+    </p>
+
+    <p>
+      <i>What is Tolik even doing at the corporate party? Who’s monitoring Grafana? Interns?</i>
+      Vovan’s reasoning briefly cleared for a moment, but alcohol promptly reclaimed its rightful
+      control over his mind.
+    </p>
+
+    <p>
+      “No, of course not…" the poor programmer tried to gather his thoughts once again.
+    </p>
+
+    <p>
+      “Swear by all you hold dear? Are you sure?"
+    </p>
+
+    <p>
+      <i>For heaven’s sake, just drop it already…</i> Vovan almost shouted. He had loathed Tolik
+      ever since he wouldn’t let him install Nix on the laptop. But that could be forgiven: security
+      concerns and all, plus it’s inconvenient to administrator… But intruding on vacation? That’s
+      too much. But a comfortable workplace is still more valuable…
+    </p>
+
+    <p>
+      “Even by prod- *hiccups* -uction…" Vovan went all in.
+    </p>
+
+    <p>
+      “Aren’t you a Nixer, though?" Tolik squinted, “You don’t like side effects, you advocate for
+      reproducible builds. So tell me, what does launching a pure function affect?"
+    </p>
+
+    <p>
+      <i>Well, seemingly nothing…</i> Tolik was a strange character. Always like this with him:
+      seems like he’s just babbling nonsense, but then he says something smart. Why is he looking at
+      me like that… And why isn’t he keeping an eye on the servers? Hoping there won’t be any issues
+      and he won’t get pinned down? Or is he not hoping, but being certain? So, are there juniors
+      sitting there or just scripts?..
+    </p>
+
+    <p>
+      “Yeah, I’ve played with Nix, I did… F-function? Well, it doesn’t affect anything…"
+    </p>
+
+    <p>
+      “Uh-huh, so if you expose a function interpreter in the API without side effects and feed it an
+      argument like your account key, nothing bad will happen?"
+    </p>
+
+    <p>
+      Vovan took another sip. Strange, strange. A dangerous type.
+    </p>
+
+    <p>
+      “It’ll be fine, why are you rambling… Bring your laptop here, let me commit your nonsense."
+    </p>
+
+    <p>
+      Tolik handed over his old Lenovo. Not getting far with that hardware… And his head was
+      throbbing… But no worries, you can code a Lisp interpreter in your sleep. No need for a
+      parser, yaml will do here… No need for JIT, what’s the difference, it’ll be fine anyway…
+    </p>
+
+    <pre><code>
+    [master 186ce41] LISP
+     1 file changed, 186 insertions(+), 3 deletions(-)
+    </code></pre>
+
+    <p>
+      “Satisfied?” Vovan asked Tolik, but he was already gone.
+    </p>
+
+    <p>
+      Strange, strange character…
+    </p>
+attachments_path: app/lisp
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: kyzylborda-docker-compose-daemon
+  cwd: app
+  socket: ./app.sock
+  socket_type: http
+secrets:
+  seed: WAeYYh6/8xsc91tO4MxiHX86IuFHaBGA
+  flag: ugra_thats_why_total_functional_programming_exists_[a-z0-9]{12}

@@ -1,0 +1,26 @@
+@model string
+
+@{
+    ViewData["Title"] = "Личный кабинет";
+}
+
+<div id="account-page" class="text-center">
+    <div class="container mt-5">
+        <div class="row">
+            <h2>Ваши промокоды</h2>
+        </div>
+        <br> 
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card">
+                    <img src="~/images/factory.jpg" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Промокод на экскурсию</h5>
+                        <p class="card-text">Посетите нашу фабрику с 50% скидкой!</p>
+                        <p class="card-text">Ваш промокод: @Model</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

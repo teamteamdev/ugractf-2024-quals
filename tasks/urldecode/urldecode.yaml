@@ -1,0 +1,29 @@
+category: pwn
+points: 200
+title:
+  ru: Раскодируй
+  en: Decode it
+author: rozetkinrobot
+description:
+  ru:
+    <p>&mdash; Что-то у нас дизбаланс в тасксете. Сложный пывн есть, а вот простых нет. Обидятся.</p>
+    <p>&mdash; Ладно, щас исправлю.</p>
+    <p><img src="https://i.imgflip.com/8fbms7.jpg"></p>
+  en:
+    <p>&mdash; Looks like our task set is rather disbalanced. We’ve got a hard pwn, but nothing simpler… That’s a bummer.</p>
+    <p>&mdash; Nevermind, I’ll fix that in a sec.</p>
+    <p><img src="https://i.imgflip.com/8fbms7.jpg"></p>
+bullets:
+  - <code>nc urldecode.{{hostname}} 9279</code>
+  - "Token: <code>{{token}}</code>"
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: ../_scripts/kyzylborda-lib-quarantine-daemon Dockerfile.controller app
+  cwd: .
+  socket: ./app.sock
+  socket_type: tcp
+  tcp_port: 9279
+attachments_path: attachments
+secrets:
+  seed: FC723ca+0ihqSg8v8FhW9ZxSccK+fnRg
+  flag: ugra_URL3nc0d3_1s_3asy_4nd_fUn_[a-z0-9]{12}

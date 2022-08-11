@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="{{ _('en') }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{ _("Easy") }}</title>
+
+        <style type="text/css">
+            @font-face {
+                font-family: Inter;
+                src: url("/static/Inter-roman.var.woff2") format("woff2");
+                font-style: normal;
+                font-weight: 100 900;
+                font-display: swap;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                height: 100%;
+            }
+
+            body {
+                line-height: 1.3em;
+                font-size: 16px;
+                font-family: Inter, sans-serif;
+                font-feature-settings: 'kern' 1, 'ss01' 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+            }
+
+            main {
+                flex: 1 0 980px;
+                padding: 1em 1em 5em 1em;
+                box-shadow: 0 -6px 10px -14px #000, 0 10px 10px -14px #000;
+                max-width: 980px;
+                position: relative;
+                background-color: #0f162d;
+                color: #fffd;
+                border-radius: 6px;
+                height: 320px;
+            }
+
+            h2 {
+                font-size: 3em;
+                font-weight: 900;
+                line-height: 1em;
+                margin: 0 0 0.25em;
+            }
+
+            h3 {
+                font-size: 1em;
+                letter-spacing: 0.05em;
+                font-weight: 600;
+                margin: 0 0 1em;
+                line-height: 1.1em;
+            }
+
+            p {
+                margin-bottom: 0.7em;
+            }
+
+            button {
+                background: #ff7a00;
+                border: none;
+                border-bottom: 2px solid #b94900;
+                border-radius: 3px;
+                color: #fff;
+                font-family: Inter, sans-serif;
+                font-weight: bold;
+                padding: 3px 10px;
+            }
+
+            button:focus {
+                outline: 1px dotted #ff7a00;
+            }
+
+            button:active {
+                position: relative;
+                top: 2px;
+                border-bottom-width: 1px;
+                margin-bottom: 1px;
+            }
+
+            .captcha {
+                display: inline-block;
+                position: absolute;
+                margin-top: 12px;
+                border: 2px solid #ff7a00;
+                background: #fff;
+                border-radius: 5px;
+                padding: 12px;
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .captcha::before {
+                content: "";
+                border: 12px solid transparent;
+                border-bottom-color: #ff7a00;
+                position: absolute;
+                margin-top: -36px;
+            }
+
+            .captcha p {
+                color: #000;
+                margin-top: 0;
+            }
+
+            .captcha img {
+                max-width: 100%;
+                margin-bottom: 12px;
+            }
+
+            .captcha form {
+                display: flex;
+            }
+
+            .captcha input {
+                flex: 1 1 0;
+                margin-right: 12px;
+                font: inherit;
+            }
+
+            .captcha.shown {
+                opacity: 1;
+                visibility: visible;
+                transition: opacity 0.5s;
+            }
+
+            .captcha-retry {
+                color: #ff0000;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h2>{{ _("Pressure") }}</h2>
+            <h3>{{ _("PPC / Programming") }}</h3>
+            <p>{{ _("Solving this challenge is very easy:") }}</p>
+            <p>
+                <button class="button">{{ _("Press this button 2024 times") }}</button>
+            </p>
+            <div class="captcha">
+                <p class="captcha-retry"></p>
+                <img>
+                <form>
+                    <input class="captcha-value" placeholder="{{ _('Value of the expression (rounded to 3 decimal places)') }}">
+                    <button class="captcha-submit">{{ _("Submit") }}</button>
+                </form>
+            </div>
+        </main>
+
+        <script type="text/javascript">
+            function ending(n) {
+                if (n % 100 >= 11 && n % 100 <= 19) {
+                    return "";
+                }
+                if (n % 10 >= 2 && n % 10 <= 4) {
+                    return "а";
+                }
+                return "";
+            }
+
+            const button = document.querySelector(".button");
+            const captcha = document.querySelector(".captcha");
+            const captchaRetry = document.querySelector(".captcha-retry");
+
+            function update({ counter, flag, need_captcha, picture, retry_captcha }) {
+                if (counter === 0) {
+                    button.textContent = flag;
+                } else {
+                    button.textContent = (
+                        document.documentElement.lang === "ru"
+                            ? `Нажмите на кнопку ${counter === 2024 ? "" : "ещё "}${counter} раз${ending(counter)}`
+                            : `Press this button ${counter} more time${counter > 1 ? "s" : ""}`
+                    );
+                }
+                button.disabled = need_captcha;
+                if (need_captcha) {
+                    captcha.classList.add("shown");
+                    captcha.querySelector("img").src = picture;
+                }
+                captchaRetry.textContent = retry_captcha ? {{ _("Try again") | tojson }} : "";
+            }
+
+            (async () => update(await (await fetch("state")).json()))();
+
+            button.addEventListener("click", async () => {
+                button.disabled = true;
+                update(await (await fetch("click", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({})
+                })).json());
+            });
+
+            const captchaValue = document.querySelector(".captcha-value");
+
+            document.querySelector(".captcha-submit").addEventListener("click", async e => {
+                e.preventDefault();
+                captcha.classList.remove("shown");
+                const respone = parseFloat(captchaValue.value);
+                captchaValue.value = "";
+                update(await (await fetch("click", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        captcha_response: respone
+                    })
+                })).json());
+            });
+        </script>
+    </body>
+</html>

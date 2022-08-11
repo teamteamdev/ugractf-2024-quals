@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Istok+Web:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        body {
+            font-family: 'Istok Web', sans-serif;
+            font-size: 18px;
+            background: #EEF8FF;
+            margin: 1em;
+        }
+        @keyframes ani {
+          0% {
+            transform: translateY(-50%);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        form, .error, .ok {
+            max-width: 20em;
+            margin: 4em auto;
+            background: white;
+            border-radius: 2em;
+            padding: 2em;
+            box-shadow: 0 24px 48px rgba(220,228,245,.7);
+            border: 2px solid rgba(0, 20, 80, .05);
+            animation: ani 2s ease-out;
+        }
+        .error {
+            color: #C20;
+        }
+        .warn {
+            color: #C20;
+        }
+        .info {
+            color: #08C;
+        }
+        .ok {
+            color: #092;
+        }
+        .input-status {
+            font-size: 75%;
+            font-weight: bold;
+            color: #C20;
+        }
+        .field {
+            font: inherit;
+            font-size: 150%;
+            display: block;
+        }
+        h1 { 
+            font: inherit;
+            font-size: 200%;
+            margin-top: 0;
+        }
+        body[lang="en"] .ru, body[lang="ru"] .en {
+            display: none;
+        }
+        input {
+            font: inherit;
+        }
+        input[type="submit"] {
+            background: rgba(220,228,245);
+            border: 2px solid rgba(0, 20, 80, .15);
+            border-radius: 0.5em;
+            padding: 0.5em 1em;
+            box-shadow: 0 4px 8px rgba(220,228,245,.3);
+        }
+        input[type="submit"]:hover {
+            background: white;
+        }
+        input[type="submit"]:active {
+            box-shadow: none;
+        }
+        #notifications {
+            max-width: 40em;
+            margin: 2em auto;
+        }
+        .n {
+            padding: 2em 4em;
+            border: 1px solid #CCD8E8;
+        }
+        .n.unread {
+            font-weight: bold;
+            background: white;
+        }
+    </style>
+    {% if fail %}
+    <meta http-equiv="refresh" content="5;url=." />
+    {% elif stage == "login" %}
+    <meta http-equiv="refresh" content="5;url=./notifications" />
+    {% endif %}
+<body lang="{{ lang or 'ru' }}">
+    {% if fail %}
+        <div class="error">
+            <p class="ru">Некорректно подтверждена капча. Просим вас устранить неисправность в вашем браузере. Сейчас вы будете перенаправлены на главную страницу.
+            <p class="en">The captcha has not been confirmed correctly. We kindly request that you fix the problem in your browser. You will now be redirected to the main page.
+        </div>
+    {% elif flag %}
+        <div id="notifications">
+            <div class="n unread">  
+                <span class="ru">Код для выполнения операций повышенной секретности: {{ flag }}</span>
+                <span class="en">The code for conducting elevated secrecy operations is: {{ flag }}</span>
+            </div>
+            <div class="n unread">  
+                <span class="ru">Подозрительная попытка входа в систему</span>
+                <span class="en">Suspicious login attempt</span>
+            </div>
+            <div class="n">
+                <span class="ru">Добро пожаловать в Индию!</span>
+                <span class="en">Welcome to India!</span>
+            </div>
+            <div class="n">
+                <span class="ru">Уведомление: Обновите данные вашей банковской карты</span>
+                <span class="en">Notification: Please update your credit card data</span>
+            </div>
+            <p><a href="."><span class="en">Log out</span><span class="ru">Выйти из системы</span></a>
+        </div>
+    {% elif flag is defined %}
+        <div class="error">
+            <p class="ru">Для просмотра этой страницы необходимо авторизоваться.
+            <p class="en">You need to log in to view this page.
+        </div>
+    {% elif stage == "login" %}
+        <div class="ok">
+            <p class="ru">Вы успешно вошли в систему. Ожидайте…
+            <p class="en">You have been logged in. Please wait…
+        </div>
+    {% else %}
+        <form method="post" action=".">
+            <h1><span class="en">Logging in</span><span class="ru">Вход в систему</span></h1>
+            {% if stage == "user" %}
+                <p><label for="input"><span class="en">User name:</span><span class="ru">Имя пользователя:</span></p>
+            {% elif stage == "password" %}
+                <p><label for="input"><span class="en">Password:</span><span class="ru">Пароль:</span></p>
+            {% elif stage == "phone" %}
+                <p class="warn">
+                    <span class="en">Recently, there have been suspicious attempts to log into your account. Additional verification is required.</span>
+                    <span class="ru">Недавно были обнаружены подозрительные попытки входа в вашу учётную запись. Требуется дополнительная верификация.</span>
+                </p>
+                <p><label for="input"><span class="en">Enter your phone number that is linked to this account:</span>
+                                      <span class="ru">Введите ваш номер телефона, привязанный к учётной записи:</span></p>
+            {% elif stage == "confirmation" %}
+                <p class="info">
+                    <span class="en">A six-digit confirmation code has been sent to your number. If you can’t receive it, enter 000000.</span>
+                    <span class="ru">На ваш номер был отправлен шестизначный код подтверждения. Если код подтверждения не приходит, введите 000000.</span>
+                </p>
+                <p><label for="input"><span class="en">Confirmation code:</span>
+                                      <span class="ru">Код подтверждения:</span></p>
+            {% elif stage == "card-ending" %}
+                <p class="warn">
+                    <span class="en">Additional information verification is required to prove your identity.</span>
+                    <span class="ru">Требуется дополнительная проверка информации для подтверждения вашей личности.</span>
+                </p>
+                <p><label for="input"><span class="en">Enter last four digits of your credit card:</span>
+                                      <span class="ru">Введите последние четыре цифры номера вашей банковской карты:</span></p>
+            {% elif stage == "passport-ending" %}
+                <p><label for="input"><span class="en">Enter last four digits of your passport number:</span>
+                                      <span class="ru">Введите последние четыре цифры номера вашего паспорта:</span></p>
+            {% elif stage == "org" %}
+                <p><label for="input"><span class="en">Enter the name of the organization that you’re employed in:</span>
+                                      <span class="ru">Введите название организации, в которой вы работаете (на английском языке):</span></p>
+            {% elif stage == "country" %}
+                <p><label for="input"><span class="en">Enter the name of the country that you have visited in your last trip abroad:</span>
+                                      <span class="ru">Введите название страны, которую вы посещали в вашей последней зарубежной поездке (на английском языке):</span></p>
+            {% elif stage == "card" %}
+                <p><label for="input"><span class="en">Enter the number of your credit card:</span>
+                                      <span class="ru">Введите номер вашей банковской карты:</span></p>
+            {% endif %}
+            <p><input class="field" {% if stage == "password" %}type="password"{% elif status %}value="{{ value }}"{% endif %} name="input" id="input" pattern="{{ regex }}" required>
+            {% if status == "fail-format" %}
+            <p class="input-status"><span class="en">Required value format not matched.</span><span class="ru">Формат значения не соблюдён.</span>
+            {% elif status == "fail-value" %}
+            <p class="input-status"><span class="en">The entered value is incorrect.</span><span class="ru">Введено неверное значение.</span>
+            {% endif %}
+            <div class="g-recaptcha" data-sitekey="6Lco120pAAAAAH3JiaxFyNSwjksF9G3tLrriasEw" data-action="REGISTER"></div>
+            <p><input class="en" type="submit" value="Submit" />
+               <input class="ru" type="submit" value="Отправить" />
+        </form>
+    {% endif %}
+</body>

@@ -1,0 +1,22 @@
+<body>
+    <script>
+        fetch('flag.wasm')
+            .then(response => response.arrayBuffer())
+            .then(bytes => WebAssembly.instantiate(bytes, {}))
+            .then(result => {
+                console.log(result);
+                console.log(result.instance);
+                console.log(result.instance.exports);
+                
+                let fm = result.instance.exports.get_flag();
+                console.log(fm);
+
+                let mem = new Uint8Array(result.instance.exports.memory.buffer);
+                let s = "";
+                for (let i = fm; i < fm+64; ++i) {
+                    s += String.fromCharCode(mem[i]);
+                }
+                console.log(s);
+            });
+    </script>
+

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>smartAlarm</title>
+		<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+		<style type="text/css">
+			html {
+				background-color: #001d4f;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			body {
+				margin: 0;
+			}
+			h1 {
+				font-family: monospace;
+				font-size: 48px;
+				color: #fffd;
+				border-bottom: 4px dotted #fff8;
+				text-align: center;
+			}
+			p {
+				font-family: sans-serif;
+				color: #fff;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>smartAlarm</h1>
+
+		<p>Scan your smartAlarm QR.</p>
+		<div id="reader"></div>
+
+		<script type="text/javascript">
+			const html5QrCode = new Html5Qrcode("reader");
+			html5QrCode.start({facingMode: "environment"}, {fps: 10, qrbox: {width: 250, height: 250}}, text => {
+				if (text.startsWith("smartAlarm ")) {
+					for (const param of text.split(" ").slice(1)) {
+						const [_, key, value] = param.match(/^(\w+)=(\w+)$/);
+						localStorage[key] = value;
+					}
+					html5QrCode.stop();
+					location.href = "alarmui";
+				}
+			});
+		</script>
+	</body>
+</html>

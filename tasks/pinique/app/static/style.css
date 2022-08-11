@@ -1,0 +1,78 @@
+body {
+    color: #000;
+    font-family: verdana, sans-serif;
+}
+
+a {
+    color: #37e;
+    text-decoration: underline;
+}
+
+.container {
+    margin-top: 30px;
+    background: #fffe;
+}
+
+.pin {
+    animation: pin 3s infinite linear;
+}
+
+.logotip .pin {
+    position: absolute;
+    top: 0;
+    left: 235px;
+}
+
+.logotip a {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: #092979 3px solid;
+    background: linear-gradient(to bottom, #09297955, #fff);
+    width: 100vw;
+}
+
+h3 {
+    color: #092979;
+    transform: skew(-20deg, 0);
+    font-weight: bold;
+    text-align: center;
+    margin: 2em 0;
+}
+
+div.glide {
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.glide img {
+    width: 100vw;
+    height: 100vh;
+}
+
+.logotip img {
+    flex: 0;
+    height: 58px;
+    width: auto;
+}
+
+@keyframes pin {
+    0%, 100% {
+        transform: rotateY(0deg);
+    }
+    50% {
+        transform: rotateY(360deg);
+    }
+}
+
+div input[name="pin"] {
+    font-size: 28px;
+    height: auto;
+    width: 8ch;
+    margin-bottom: 10px;
+}

@@ -1,0 +1,19 @@
+category: ppc
+points: 150
+title:
+  ru: Сложная
+  en: Uneasy
+author: purplesyringa
+description:
+  ru: <p>Решение для этого задания подходит и к заданию <a href="/tasks/peterparker/">Несложная</a>.</p>
+  en: <p>Solution for this challenge also works for <a href="/tasks/peterparker/">Easy</a>.</p>
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: kyzylborda-docker-compose-daemon
+  cwd: app
+  socket: ./app.sock
+  socket_type: http
+secrets:
+  seed: T4xieVt+gnDXW8/brjpxkP67j2qn6MH5
+  flag: ugra_peterparker2_final_release_LASTVERSION_[a-z0-9]{12}
+# meow?..

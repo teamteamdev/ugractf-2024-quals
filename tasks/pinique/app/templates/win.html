@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}ВЫ ВЫИГРАЛИ{% endblock %}
+
+{% block content %}
+    <script src="https://unpkg.com/@glidejs/glide/dist/glide.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@glidejs/glide/dist/css/glide.core.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@glidejs/glide/dist/css/glide.theme.min.css">
+
+    <div class="glide">
+      <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides">
+          <li class="glide__slide">
+            <img src="{{ url_for('static', filename='1.jpg') }}">
+          </li>
+          <li class="glide__slide">
+            <img src="{{ url_for('static', filename='2.jpg') }}">
+          </li>
+          <li class="glide__slide">
+            <img src="{{ url_for('static', filename='3.jpg') }}">
+          </li>
+          <li class="glide__slide">
+            <img src="{{ url_for('static', filename='4.jpg') }}">
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container mt-5">
+        <h1><b>ПОЗДРАВЛЯЕМ</b></h1>
+
+        <p>Вы выиграли. Вы прошли данное испытание. Вам могло показаться, что пути нет. Что впереди вас ждёт лишь непробиваемая форма с Пин-кодом. Что за ним — ничего. Что за ним — пустота. Что вы не достигните высот победы, потому что это препятствие непреодолимо.</p>
+        <p>Но вы не сдались. Вы проявили смелость. Ведь вы — знаете, что высота уважает только смелых. Что только смелого не остановит никакой Пин-код. Что только смелый сам, в конце концов, полезет в самолёт.</p>
+        <p>Я в любом случае не позволю вам получить доступ к своей [ДАННЫЕ УДАЛЕНЫ]. Но в знак уважения хочу вручить вам ключ от многих дверей. Промо-код на скидку 5% при заказе билетов авиакомпании ЮГэйр. Он искренне ваш.</p>
+
+        <p class="center">
+            <h3 style="text-align: center">{{flag}}</h3>
+        </p>
+
+        <br><br><br>
+
+
+        <img src="{{ url_for('static', filename='sig.png') }}" height=100 style="padding-left: 100px; mix-blend-mode: multiply">
+    
+        <p style="float: right; padding-right: 100px;">
+        С уважением,<br>
+        генеральный директор<br>
+        <b>ПИН</b>
+        </p>
+
+        <br><br><br><br><br>
+    </div>
+
+    <script>
+        new Glide('.glide', {
+            type: 'carousel',
+            preView: 1,
+            autoplay: 3000,
+            rewind: true,
+            keyboard: false,
+            hoverpause: false,
+            animationDuration: 1000
+        }).mount()
+    </script>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+category: recon
+points: 200
+title:
+  ru: Всё это как-то подозрительно
+  en: Looking suspicious
+author: enhydra
+description:
+  ru: |-
+    <p>Спустя несколько нервных минут замок поддался. Вы открываете дверь и замечаете, что она на сигнализации. Лёгкий холодок прокатывается по вашему телу сверху вниз, превращаясь за это время в леденящий ужас. Ведь если вас кто-то здесь увидит — это конец. Здесь никак нельзя оставаться больше минуты.
+    <p>Вы бегаете по квартире в поисках хоть каких-то зацепок, и уже отчаявшись, заходите в последнюю комнату и обнаруживаете там на столе заветную бумажку. Один снимок — это всё, что вы можете себе позволить. И ни в коем случае нельзя до чего-либо дотрагиваться
+  en: |-
+    <p>After a few nervous minutes, the lock gives in. You open the door and notice that it’s on the alarm. A slight chill rolls through your body from top to bottom; somewhere around the ankles it has turned into a full-scale avalanche of dread. Because if anyone sees you here, it’s literally game over. There’s no way you can stay here for more than a minute.
+    <p>You run around the apartment looking for any clues, and in desperation, you go into the last room and find a piece of paper on the table.
+attachments_path: attachments
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: kyzylborda-docker-compose-daemon
+  cwd: app
+  socket: ./app.sock
+  socket_type: http
+secrets:
+  seed: uKi4zV3E/ZS5TVHwKMDAwMDAwOTAgIDYwIGEzIGU1ID
+  flag: ugra_sometimes_you_just_narrowly_escape_and_win_[a-z0-9]{12}

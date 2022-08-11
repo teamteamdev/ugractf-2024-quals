@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+	</head>
+    <style>
+        * { margin: 0; padding: 0; }
+        body { 
+            color: #f0f;
+            background-color: #000;
+            background-repeat: no-repeat;
+            background-size: 50vh;
+            background-position: center center;
+            image-rendering: pixelated;
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50vh;
+        }
+        textarea[name="lisp"] {
+            border-width: 0 20px 0 20px;
+            border-style: solid;
+            border-color: #fff;
+            background: #000c;
+            color: #0f0;
+            border-radius: 200px;
+            height: calc(40px + 2em);
+            padding: 30px 50px;
+            font-size: 32px;
+            box-shadow: 0 0 20px #0f0;
+            resize: none;
+        }
+        input[type="submit"] {
+            display: block;
+            margin: 1em auto;
+            font-size: 32px;
+            font-family: monospace;
+            transform: skew(-10deg, 0);
+            transition: transform .25s ease;
+            background: #0f0;
+            color: #000;
+            padding: 20px;
+            border: 0;
+        }
+        input[type="submit"]:hover {
+            transform: skew(-25deg, 0) scale(1.25);
+        }
+    </style>
+	<body>
+		<form method="POST">
+			<textarea name="lisp" placeholder="(+ 1 2)"></textarea><br>
+			<input type="submit">
+		</form>
+	</body>
+</html>

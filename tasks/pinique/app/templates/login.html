@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Войти{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-danger">
+                <p><b>В ходе потоковой обработки данных пользователя возникла следующая ошибка (ошибки):</b></p>
+                <ul class="">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        {% endwith %}
+
+        <h2 class="mb-4">Войти</h2>
+        <form action="/{{token}}/login" method="post">
+            <div class="mb-3">
+                <label for="username" class="form-label">Имя пользователя</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="pin" class="form-label">
+                    <img src="{{ url_for('static', filename='pin.png') }}" class="pin" height=16>
+                    Пин-код
+                </label>
+                <input type="text" class="form-control" id="pin" name="pin" pattern="[0-9]{6}" required maxlength=6>
+            </div>
+            <button type="submit" class="btn btn-primary">Войти</button>
+        </form>
+    </div>
+{% endblock %}

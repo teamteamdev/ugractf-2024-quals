@@ -1,0 +1,33 @@
+version: "3.4"
+services:
+  pastapp:
+    build:
+      context: "./src"
+    user: ${DOCKER_USER}
+    volumes:
+      - "${TMPDIR}:/sockets"
+    depends_on:
+      - database
+      - nginx
+  database:
+      image: postgres
+      environment:
+        - POSTGRES_PASSWORD=MWY4NDNmZDgtZDk5Ny00ZTQwLWE4M2Qt
+        - POSTGRES_USER=admin
+        - POSTGRES_DB=MyPastaDB
+      command: postgres -c log_statement=none -c log_min_messages=fatal
+      volumes:
+        - ./sql:/docker-entrypoint-initdb.d
+      expose:
+        - 5492
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+    volumes:
+      - "./nginx/nginx.conf:/nginx.conf"
+      - "${TMPDIR}:/sockets"
+    
+networks:
+  default:
+      internal: true

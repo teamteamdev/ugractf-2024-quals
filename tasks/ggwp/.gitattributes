@@ -1,0 +1,2 @@
+UgraCTF/** filter=lfs diff=lfs merge=lfs -text
+writeup/minecraft.png filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,26 @@
+category: ctb
+points: 100
+title: Golden Gate
+author: purplesyringa
+# meow123
+description:
+  ru: >
+    <p>Ну и что, что не ssh? Столько лет так жили и дальше жить будем!
+    <p><em>Обновлено 11 февраля в 00:25:</em> Системный администратор обновил конфигурацию системы, но совершил при этом критическую ошибку. Найдёте её?
+  en: >
+    <p>Nah, this isn’t ssh, so what? We’ve been using telnet for years, there’s no reason to switch.
+    <p><em>Update on February 11, 00:25:</em> The system administrator has updated the system configuration, but made a critical mistake. Can you find what went wrong?
+bullets:
+  - <code>telnet goldengate.{{hostname}} 9277 -l {{ token }}</code>
+  - "Login: <code>ugra</code>"
+  - "Password: <code>ucucuga</code>"
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: ../_scripts/kyzylborda-lib-quarantine-daemon Dockerfile.controller app
+  cwd: .
+  socket: ./app.sock
+  socket_type: tcp
+  tcp_port: 9277
+secrets:
+  seed: bmwkIxHP2Z1stYdW156y1P/fHUkbUJwt
+  flag: ugra_thats_how_you_bypassed_autoexec_bat_in_early_days_[a-z0-9]{12}

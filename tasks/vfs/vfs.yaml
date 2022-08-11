@@ -1,0 +1,50 @@
+category: pwn
+points: 400
+title:
+  ru: Файловая система
+  en: File system
+author: purplesyringa
+description:
+  ru: |
+    <p>
+      callidus77: Помница в нашей сетке монтажники подключали абонента. Пришли, воткнули сетевуху, а
+      у него Фря и дров нету. Почесали головы и ушли. Чел через три недели наконец-то коннектится.
+    </p>
+    <p>
+      Грят: “Долго ж ты искал дрова.”
+    </p>
+    <p>
+      Он: “Я не искал. Я их сам написал.”
+    </p>
+    <p>
+      (c) Башорг
+    </p>
+  en: |
+    <p>
+      callidus77: This reminds me of a story. Technicians were connecting a subscriber to our network.
+      They plugged in the network card, but he was using FreeBSD with no matching drivers installed.
+      They scratched their heads and left. The subscriber finally manages to connect after three
+      weeks.
+    </p>
+    <p>
+      They say: “Took you long to find the drivers.”
+    </p>
+    <p>
+      He replies: “I wasn’t searching. I wrote them myself.”
+    </p>
+    <p>
+      (c) Russian Bash.org
+    </p>
+bullets:
+  - <code>nc vfs.{{hostname}} 9278</code>
+  - "Token: <code>{{token}}</code>"
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: ../_scripts/kyzylborda-lib-quarantine-daemon Dockerfile.controller vfs
+  cwd: .
+  socket: ./app.sock
+  socket_type: tcp
+  tcp_port: 9278
+secrets:
+  seed: SAfGSaI+QhQxbiU5Nk941A/Xll/jre5i
+  flag: ugra_i_hope_you_enjoyed_it_[a-z0-9]{12}

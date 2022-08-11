@@ -1,0 +1,4 @@
+FROM imachug/kyzylborda_lib
+COPY attachments/urldecode /var/urldecode
+WORKDIR /task/controller
+CMD ["kyzylborda-quarantine", "unix:/tmp/app.sock", "server"]
