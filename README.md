@@ -1,6 +1,6 @@
 # Ugra CTF Quals 2024
 
-10–11 февраля 2024 | [Сайт](https://2024.ugractf.ru)
+10–11 февраля 2024 | [Сайт](https://2024.ugractf.ru) | [Результаты](SCOREBOARD.md)
 
 ## Таски
 
