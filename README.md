@@ -14,7 +14,7 @@
 [Всё это как-то подозрительно](tasks/lookingsus/) (enhydra, recon 200)  
 [Посланник](tasks/notezic/) (enhydra, crypto 150)  
 [Раз, два, взяли](tasks/onetwograb/) (enhydra, misc 100)  
-[Pedersen](tasks/pedersen/) (nsychev, crypto 300)  
+[Pedersen](tasks/pedersen/) (deffrian, crypto 300)  
 [Несложная](tasks/peterparker/) (purplesyringa, ppc 100)  
 [Сложная](tasks/peterparker2/) (purplesyringa, ppc 150)  
 [На старой железяке…](tasks/pinique/) (ksixty, ppc 150)  
